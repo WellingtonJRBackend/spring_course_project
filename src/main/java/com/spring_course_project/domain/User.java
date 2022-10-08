@@ -5,21 +5,38 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Entity
+@Table(name = "user")
 public class User {
 	
-		private Long id;
-		private String name;
-		private String email;
-		private String password;
-		private Role role;
-		
-		private List<Request> requests = new ArrayList<>();
-		private List<RequestStage> stages = new ArrayList<>();
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(length = 75, nullable = false)
+	private String name;
+	
+	@Column(length = 75,nullable = false,unique = true)
+	private String email;
+	
+	@Column(length = 100,nullable = false)
+	private String password;
+	
+	@Column(length = 20,nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Role role;
+	
+	@OneToMany(mappedBy = "user")
+	private List<Request> requests = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "user")
+	private List<RequestStage> stages = new ArrayList<>();
 	}
 
